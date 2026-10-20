@@ -1,6 +1,7 @@
 import sys
 
 from parser import MapParser, ParseError
+from path_finder import Pathfinder
 
 def main() -> None:
 
@@ -28,6 +29,11 @@ def main() -> None:
             other_zone = c.other_side(current_zone)
             neighbors.append(other_zone.name)
         print(f" {current_zone.name} connects to: {neighbors}")
+
+    find = Pathfinder(network)
+    path = find.shortest_path()
+    print("--".join(zone.name for zone in path))
+    
 
 if __name__ == "__main__":
     main()

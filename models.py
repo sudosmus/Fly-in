@@ -35,6 +35,7 @@ class Connection:
         self.a = a
         self.b = b
         self.max_link_capacity = max_link_capacity
+    
     def other_side(self, zone: Zone) -> Zone:
         if zone is self.a:
             return self.b
@@ -53,8 +54,10 @@ class Network:
             self.end = end
             self.connecteds: dict[str, list[Connection]] = {}
             for name in zones:
+                """Loop creates one empty list per zone, zone names as the keys"""
                 self.connecteds[name] = []
             for con in connections:
+                """Each connection goes into the lists of both zones"""
                 self.connecteds[con.a.name].append(con)
                 self.connecteds[con.b.name].append(con)
             
