@@ -8,10 +8,17 @@ class ZoneType(Enum):
     PRIORITY = "priority"
 
 class Zone:
-    def __init__(self, name: str, x: int, y: int,
-                zone_type: ZoneType = ZoneType.NORMAL,
-                color: str | None = None,
+    
+    def __init__(self, name: str, x: int, y: int, 
+                zone_type: ZoneType = ZoneType.NORMAL, color: str | None = None, 
                 max_drones: int = 1) -> None:
+        self.name = name
+        self.x = x
+        self.y = y
+        self.zone_type = zone_type
+        self.color = color
+        self.max_drones = max_drones
+
 
     def move_cost(self) -> int:
         "Turns needed to enter the zone (default 1, restricted 2)"
@@ -25,7 +32,9 @@ class Zone:
 
 class Connection:
     def __init__(self, a: Zone, b: Zone, max_link_capacity: int = 1) -> None:
-
+        self.a = a
+        self.b = b
+        self.max_link_capacity = max_link_capacity
     def other_side(self, zone: Zone) -> Zone:
         if zone is self.a:
             return self.b
