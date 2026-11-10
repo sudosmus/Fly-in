@@ -23,16 +23,16 @@ def main() -> None:
         print(f"{name} ({zone.x}, {zone.y}) {zone.zone_type.value} "
             f"max_drones= {zone.max_drones} color= {zone.color}")
     for name, con in network.connecteds.items():
-        neighbors = []
-        for c in con:
-            current_zone = network.zones[name]
-            other_zone = c.other_side(current_zone)
-            neighbors.append(other_zone.name)
-        print(f" {current_zone.name} connects to: {neighbors}")
+        current_zone = network.zones[name]
+        neighbors = [c.other_side(current_zone).name for c in con]
+        print(f" {name} connects to: {neighbors}")
 
-    find = Pathfinder(network)
-    path = find.shortest_path()
-    print("--".join(zone.name for zone in path))
+    distances = Pathfinder(network).distance_to_goal()
+    if network.start.name is not in distances:
+        print("Error: no path found")
+        sys.exit(1)
+    for name, dist in distances.items():
+        print(f"{name}: {dist}")
     
 
 if __name__ == "__main__":

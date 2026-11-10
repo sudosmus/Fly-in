@@ -24,7 +24,7 @@ class MapParser:
                     continue
                 if ":" not in line:
                     raise ParseError(line_nb, "no ':' in the line")
-                prefix, content = line.split(": ", 1)
+                prefix, content = line.split(":", 1)
                 prefix = prefix.strip()
                 content = content.strip()
                 if nb_drones is None:
@@ -86,6 +86,10 @@ class MapParser:
             raise ParseError(line_nb, f"Invalid format in connection {main}")
         a_text = a_text.strip()
         b_text = b_text.strip()
+        if a_text == b_text:
+            raise ParseError(
+                line_nb, f"zone cannot connect to itself {a_text}"
+            )
         for name in (a_text, b_text):
             if name not in zones:
                 raise ParseError(line_nb, f"unknown zone name: '{name}'")
@@ -103,9 +107,6 @@ class MapParser:
         return Connection(zones[a_text], zones[b_text], capacity)
       
         
-
-
-
     def _parse_zone(self, content: str, line_nb: int) -> Zone:
         if "[" in content:
             index = content.index("[")

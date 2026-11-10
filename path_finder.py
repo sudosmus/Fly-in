@@ -14,6 +14,7 @@ class Pathfinder():
         while queue:
             cost, name = heapq.heappop(queue)
             
+            """best cost for the zone stays the same"""
             if cost > best_cost[name]:
                 continue
             
@@ -31,7 +32,7 @@ class Pathfinder():
                     best_cost[neighbor.name] = new_cost
                     heapq.heappush(queue, (new_cost, neighbor.name))
                     
-            return best_cost
+        return best_cost
         
 class ReservationTable():
     def __init__(self, network: Network) -> None:
