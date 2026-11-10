@@ -28,7 +28,7 @@ def main() -> None:
         print(f" {name} connects to: {neighbors}")
 
     distances = Pathfinder(network).distance_to_goal()
-    if network.start.name is not in distances:
+    if network.start.name not in distances:
         print("Error: no path found")
         sys.exit(1)
     for name, dist in distances.items():
