@@ -2,6 +2,7 @@ import sys
 
 from parser import MapParser, ParseError
 from path_finder import Pathfinder
+from simulation import Simulation
 
 def main() -> None:
 
@@ -17,7 +18,7 @@ def main() -> None:
         print(f"Error: {error}")
         sys.exit(1)
     
-    print(f"{network.nb_drones} drones")
+    """print(f"{network.nb_drones} drones")
     print(f"start: {network.start.name}, end: {network.end.name}")
     for name, zone in network.zones.items():
         print(f"{name} ({zone.x}, {zone.y}) {zone.zone_type.value} "
@@ -25,14 +26,19 @@ def main() -> None:
     for name, con in network.connecteds.items():
         current_zone = network.zones[name]
         neighbors = [c.other_side(current_zone).name for c in con]
-        print(f" {name} connects to: {neighbors}")
+        print(f" {name} connects to: {neighbors}")"""
 
     distances = Pathfinder(network).distance_to_goal()
     if network.start.name not in distances:
         print("Error: no path found")
         sys.exit(1)
-    for name, dist in distances.items():
-        print(f"{name}: {dist}")
+    try:
+        lines = Simulation(network).run()
+    except RuntimeError as error:
+        print(f"Error: {error}")
+        sys.exit(1)
+    for line in lines:
+        print(line)
     
 
 if __name__ == "__main__":
